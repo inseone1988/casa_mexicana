@@ -12,15 +12,15 @@ class DropDownMenu extends StatefulWidget {
 
 class _DropDownMenuState extends State<DropDownMenu> {
   String selectedValue;
-  List<DropdownMenuItem> items;
+  List<DropdownMenuItem<String>> items;
 
   @override
   void initState() {
     super.initState();
     // TODO: implement initState
+    _generateItemList();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       if (widget.values.length > 0) selectedValue = widget.values[0];
-      _generateItemList();
     });
   }
 
@@ -42,7 +42,7 @@ class _DropDownMenuState extends State<DropDownMenu> {
 
   void _generateItemList() {
     items = List.generate(widget.values.length, (index) {
-      return DropdownMenuItem(
+      return DropdownMenuItem<String>(
         child: Text(widget.values[index]),
       );
     });
