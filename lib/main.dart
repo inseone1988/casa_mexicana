@@ -1,4 +1,5 @@
 import 'package:casa_mexicana/ui/drawer.dart';
+import 'package:casa_mexicana/ui/panel.dart';
 import 'package:casa_mexicana/ui/routes/unimex_view.dart';
 import 'package:flutter/material.dart';
 
@@ -74,28 +75,29 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    return Scaffold(
-      drawer: AppDrawer(
-        onTap: (int) {
-          setState(() {
-            this._index = int;
-            print("Hello");
-          });
-
-        },
-      ),
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: _body,
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+    return Panel();
+    // return Scaffold(
+    //   drawer: AppDrawer(
+    //     onTap: (int) {
+    //       setState(() {
+    //         this._index = int;
+    //         print("Hello");
+    //       });
+    //
+    //     },
+    //   ),
+    //   appBar: AppBar(
+    //     // Here we take the value from the MyHomePage object that was created by
+    //     // the App.build method, and use it to set our appbar title.
+    //     title: Text(widget.title),
+    //   ),
+    //   body: _body,
+    //   floatingActionButton: FloatingActionButton(
+    //     onPressed: _incrementCounter,
+    //     tooltip: 'Increment',
+    //     child: Icon(Icons.add),
+    //   ), // This trailing comma makes auto-formatting nicer for build methods.
+    // );
   }
 
   Widget changeBody(int index) {

@@ -1,5 +1,6 @@
 import 'package:casa_mexicana/api/api.dart';
 import 'package:casa_mexicana/api/response.dart';
+import 'package:casa_mexicana/ui/panel.dart';
 import 'package:casa_mexicana/ui/register.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,8 @@ class UnimexView extends StatefulWidget {
 class _UnimexViewState extends State<UnimexView> {
   bool _validated = false;
 
+  User luser;
+
   @override
   Widget build(BuildContext context) {
     return content();
@@ -23,9 +26,22 @@ class _UnimexViewState extends State<UnimexView> {
   };
 
   Widget content() {
+    if(luser != null && _validated){
+      Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (context){
+          return Panel();
+        })
+      );
+    }
     if (_validated) {
       return Center(
-        child: Register(),
+        child: Register(
+          onRegistration: (user){
+            setState(() {
+              luser = user;
+            });
+          },
+        ),
       );
     }
     return Center(

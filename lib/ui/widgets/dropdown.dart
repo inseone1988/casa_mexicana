@@ -32,9 +32,11 @@ class _DropDownMenuState extends State<DropDownMenu> {
       icon: const Icon(Icons.arrow_downward),
       iconSize: 24,
       elevation: 16,
+      isExpanded: true,
       onChanged: (String value) {
-        print(value);
-        selectedValue = value;
+        setState(() {
+          selectedValue = value;
+        });
         widget.onSelect(value);
       },
     );
@@ -44,6 +46,7 @@ class _DropDownMenuState extends State<DropDownMenu> {
     items = List.generate(widget.values.length, (index) {
       return DropdownMenuItem<String>(
         child: Text(widget.values[index]),
+        value: widget.values[index],
       );
     });
   }
