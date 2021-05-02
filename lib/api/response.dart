@@ -33,22 +33,146 @@ class Payload {
     this.message,
     this.validated,
     this.user,
+    this.books,
   });
 
   String message;
   bool validated;
   User user;
+  List<Book> books;
 
   factory Payload.fromJson(Map<String, dynamic> json) => Payload(
     message: json["message"] == null ? null : json["message"],
     validated: json["validated"] == null ? null : json["validated"],
     user: json["user"] == null ? null : User.fromJson(json["user"]),
+    books: json["books"] == null ? null : List<Book>.from(json["books"].map((x) => Book.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
     "message": message == null ? null : message,
     "validated": validated == null ? null : validated,
     "user": user == null ? null : user.toJson(),
+    "books": books == null ? null : List<dynamic>.from(books.map((x) => x.toJson())),
+  };
+}
+
+class Book {
+  Book({
+    this.id,
+    this.title,
+    this.author,
+    this.publisher,
+    this.edition,
+    this.career,
+    this.quarter,
+    this.status,
+    this.blocked,
+    this.copies,
+    this.item,
+  });
+
+  int id;
+  String title;
+  String author;
+  String publisher;
+  String edition;
+  String career;
+  int quarter;
+  bool status;
+  bool blocked;
+  int copies;
+  Item item;
+
+  factory Book.fromJson(Map<String, dynamic> json) => Book(
+    id: json["id"] == null ? null : json["id"],
+    title: json["title"] == null ? null : json["title"],
+    author: json["author"] == null ? null : json["author"],
+    publisher: json["publisher"] == null ? null : json["publisher"],
+    edition: json["edition"] == null ? null : json["edition"],
+    career: json["career"] == null ? null : json["career"],
+    quarter: json["quarter"] == null ? null : json["quarter"],
+    status: json["status"] == null ? null : json["status"],
+    blocked: json["blocked"] == null ? null : json["blocked"],
+    copies: json["copies"] == null ? null : json["copies"],
+    item: json["item"] == null ? null : Item.fromJson(json["item"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id == null ? null : id,
+    "title": title == null ? null : title,
+    "author": author == null ? null : author,
+    "publisher": publisher == null ? null : publisher,
+    "edition": edition == null ? null : edition,
+    "career": career == null ? null : career,
+    "quarter": quarter == null ? null : quarter,
+    "status": status == null ? null : status,
+    "blocked": blocked == null ? null : blocked,
+    "copies": copies == null ? null : copies,
+    "item": item == null ? null : item.toJson(),
+  };
+}
+
+class Item {
+  Item({
+    this.itemid,
+    this.price,
+    this.quantity,
+    this.product,
+  });
+
+  int itemid;
+  double price;
+  int quantity;
+  Product product;
+
+  factory Item.fromJson(Map<String, dynamic> json) => Item(
+    itemid: json["itemid"] == null ? null : json["itemid"],
+    price: json["price"] == null ? null : json["price"].toDouble(),
+    quantity: json["quantity"] == null ? null : json["quantity"],
+    product: json["product"] == null ? null : Product.fromJson(json["product"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "itemid": itemid == null ? null : itemid,
+    "price": price == null ? null : price,
+    "quantity": quantity == null ? null : quantity,
+    "product": product == null ? null : product.toJson(),
+  };
+}
+
+class Product {
+  Product({
+    this.productid,
+    this.description,
+    this.basePrice,
+    this.cost,
+    this.code,
+    this.sku,
+  });
+
+  int productid;
+  String description;
+  String basePrice;
+  String cost;
+  String code;
+  String sku;
+
+  factory Product.fromJson(Map<String, dynamic> json) => Product(
+    productid: json["productid"] == null ? null : json["productid"],
+    description: json["description"] == null ? null : json["description"],
+    basePrice: json["basePrice"] == null ? null : json["basePrice"],
+    cost: json["cost"] == null ? null : json["cost"],
+    code: json["code"] == null ? null : json["code"],
+    sku: json["sku"] == null ? null : json["sku"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "productid": productid == null ? null : productid,
+    "description": description == null ? null : description,
+    "basePrice": basePrice == null ? null : basePrice,
+    "cost": cost == null ? null : cost,
+    "code": code == null ? null : code,
+    "sku": sku == null ? null : sku,
   };
 }
 
@@ -157,81 +281,17 @@ class Order {
 
   int orderid;
   String status;
-  Items items;
+  List<Item> items;
 
   factory Order.fromJson(Map<String, dynamic> json) => Order(
     orderid: json["orderid"] == null ? null : json["orderid"],
     status: json["status"] == null ? null : json["status"],
-    items: json["items"] == null ? null : Items.fromJson(json["items"]),
+    items: json["items"] == null ? null : List<Item>.from(json["items"].map((x) => Item.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
     "orderid": orderid == null ? null : orderid,
     "status": status == null ? null : status,
-    "items": items == null ? null : items.toJson(),
-  };
-}
-
-class Items {
-  Items({
-    this.itemid,
-    this.price,
-    this.quantity,
-    this.product,
-  });
-
-  int itemid;
-  String price;
-  int quantity;
-  Product product;
-
-  factory Items.fromJson(Map<String, dynamic> json) => Items(
-    itemid: json["itemid"] == null ? null : json["itemid"],
-    price: json["price"] == null ? null : json["price"],
-    quantity: json["quantity"] == null ? null : json["quantity"],
-    product: json["product"] == null ? null : Product.fromJson(json["product"]),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "itemid": itemid == null ? null : itemid,
-    "price": price == null ? null : price,
-    "quantity": quantity == null ? null : quantity,
-    "product": product == null ? null : product.toJson(),
-  };
-}
-
-class Product {
-  Product({
-    this.productid,
-    this.description,
-    this.basePrice,
-    this.cost,
-    this.code,
-    this.sku,
-  });
-
-  int productid;
-  String description;
-  String basePrice;
-  String cost;
-  String code;
-  String sku;
-
-  factory Product.fromJson(Map<String, dynamic> json) => Product(
-    productid: json["productid"] == null ? null : json["productid"],
-    description: json["description"] == null ? null : json["description"],
-    basePrice: json["basePrice"] == null ? null : json["basePrice"],
-    cost: json["cost"] == null ? null : json["cost"],
-    code: json["code"] == null ? null : json["code"],
-    sku: json["sku"] == null ? null : json["sku"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "productid": productid == null ? null : productid,
-    "description": description == null ? null : description,
-    "basePrice": basePrice == null ? null : basePrice,
-    "cost": cost == null ? null : cost,
-    "code": code == null ? null : code,
-    "sku": sku == null ? null : sku,
+    "items": items == null ? null : List<dynamic>.from(items.map((x) => x.toJson())),
   };
 }
