@@ -34,18 +34,21 @@ class Payload {
     this.validated,
     this.user,
     this.books,
+    this.order,
   });
 
   String message;
   bool validated;
   User user;
   List<Book> books;
+  Order order;
 
   factory Payload.fromJson(Map<String, dynamic> json) => Payload(
     message: json["message"] == null ? null : json["message"],
     validated: json["validated"] == null ? null : json["validated"],
     user: json["user"] == null ? null : User.fromJson(json["user"]),
     books: json["books"] == null ? null : List<Book>.from(json["books"].map((x) => Book.fromJson(x))),
+    order: json["order"] == null ? null : Order.fromJson(json["order"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -53,6 +56,7 @@ class Payload {
     "validated": validated == null ? null : validated,
     "user": user == null ? null : user.toJson(),
     "books": books == null ? null : List<dynamic>.from(books.map((x) => x.toJson())),
+    "order": order == null ? null : order.toJson(),
   };
 }
 
@@ -114,35 +118,39 @@ class Book {
 
 class Item {
   Item({
-    this.itemid,
+    this.id,
     this.price,
     this.quantity,
     this.product,
+    this.bookid,
   });
 
-  int itemid;
+  int id;
   double price;
   int quantity;
   Product product;
+  int bookid;
 
   factory Item.fromJson(Map<String, dynamic> json) => Item(
-    itemid: json["itemid"] == null ? null : json["itemid"],
+    id: json["id"] == null ? null : json["id"],
     price: json["price"] == null ? null : json["price"].toDouble(),
     quantity: json["quantity"] == null ? null : json["quantity"],
     product: json["product"] == null ? null : Product.fromJson(json["product"]),
+    bookid: json["bookid"] == null ? null : json["bookid"],
   );
 
   Map<String, dynamic> toJson() => {
-    "itemid": itemid == null ? null : itemid,
+    "id": id == null ? null : id,
     "price": price == null ? null : price,
     "quantity": quantity == null ? null : quantity,
     "product": product == null ? null : product.toJson(),
+    "bookid": bookid == null ? null : bookid,
   };
 }
 
 class Product {
   Product({
-    this.productid,
+    this.id,
     this.description,
     this.basePrice,
     this.cost,
@@ -150,7 +158,7 @@ class Product {
     this.sku,
   });
 
-  int productid;
+  int id;
   String description;
   String basePrice;
   String cost;
@@ -158,7 +166,7 @@ class Product {
   String sku;
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
-    productid: json["productid"] == null ? null : json["productid"],
+    id: json["id"] == null ? null : json["id"],
     description: json["description"] == null ? null : json["description"],
     basePrice: json["basePrice"] == null ? null : json["basePrice"],
     cost: json["cost"] == null ? null : json["cost"],
@@ -167,7 +175,7 @@ class Product {
   );
 
   Map<String, dynamic> toJson() => {
-    "productid": productid == null ? null : productid,
+    "id": id == null ? null : id,
     "description": description == null ? null : description,
     "basePrice": basePrice == null ? null : basePrice,
     "cost": cost == null ? null : cost,
@@ -176,8 +184,45 @@ class Product {
   };
 }
 
+class Order {
+  Order({
+    this.id,
+    this.status,
+    this.discount,
+    this.total,
+    this.description,
+    this.items,
+  });
+
+  int id;
+  String status;
+  double discount;
+  double total;
+  String description;
+  List<Item> items;
+
+  factory Order.fromJson(Map<String, dynamic> json) => Order(
+    id: json["id"] == null ? null : json["id"],
+    status: json["status"] == null ? null : json["status"],
+    discount: json["discount"] == null ? null : json["discount"].toDouble(),
+    total: json["total"] == null ? null : json["total"].toDouble(),
+    description: json["description"] == null ? null : json["description"],
+    items: json["items"] == null ? null : List<Item>.from(json["items"].map((x) => Item.fromJson(x))),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id == null ? null : id,
+    "status": status == null ? null : status,
+    "discount": discount == null ? null : discount,
+    "total": total == null ? null : total,
+    "description": description == null ? null : description,
+    "items": items == null ? null : List<dynamic>.from(items.map((x) => x.toJson())),
+  };
+}
+
 class User {
   User({
+    this.id,
     this.validated,
     this.name,
     this.career,
@@ -187,6 +232,7 @@ class User {
     this.chat,
   });
 
+  int id;
   bool validated;
   String name;
   String career;
@@ -196,6 +242,7 @@ class User {
   Chat chat;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
+    id: json["id"] == null ? null : json["id"],
     validated: json["validated"] == null ? null : json["validated"],
     name: json["name"] == null ? null : json["name"],
     career: json["career"] == null ? null : json["career"],
@@ -206,6 +253,7 @@ class User {
   );
 
   Map<String, dynamic> toJson() => {
+    "id": id == null ? null : id,
     "validated": validated == null ? null : validated,
     "name": name == null ? null : name,
     "career": career == null ? null : career,
@@ -238,7 +286,7 @@ class Chat {
 
 class Message {
   Message({
-    this.messageid,
+    this.id,
     this.customerid,
     this.type,
     this.content,
@@ -246,7 +294,7 @@ class Message {
     this.received,
   });
 
-  int messageid;
+  int id;
   int customerid;
   String type;
   String content;
@@ -254,7 +302,7 @@ class Message {
   bool received;
 
   factory Message.fromJson(Map<String, dynamic> json) => Message(
-    messageid: json["messageid"] == null ? null : json["messageid"],
+    id: json["id"] == null ? null : json["id"],
     customerid: json["customerid"] == null ? null : json["customerid"],
     type: json["type"] == null ? null : json["type"],
     content: json["content"] == null ? null : json["content"],
@@ -263,35 +311,11 @@ class Message {
   );
 
   Map<String, dynamic> toJson() => {
-    "messageid": messageid == null ? null : messageid,
+    "id": id == null ? null : id,
     "customerid": customerid == null ? null : customerid,
     "type": type == null ? null : type,
     "content": content == null ? null : content,
     "timestamp": timestamp == null ? null : timestamp.toIso8601String(),
     "received": received == null ? null : received,
-  };
-}
-
-class Order {
-  Order({
-    this.orderid,
-    this.status,
-    this.items,
-  });
-
-  int orderid;
-  String status;
-  List<Item> items;
-
-  factory Order.fromJson(Map<String, dynamic> json) => Order(
-    orderid: json["orderid"] == null ? null : json["orderid"],
-    status: json["status"] == null ? null : json["status"],
-    items: json["items"] == null ? null : List<Item>.from(json["items"].map((x) => Item.fromJson(x))),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "orderid": orderid == null ? null : orderid,
-    "status": status == null ? null : status,
-    "items": items == null ? null : List<dynamic>.from(items.map((x) => x.toJson())),
   };
 }

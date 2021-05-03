@@ -4,20 +4,25 @@
     "message": "message",
     "validated": true,
     "user": {
+      "id": 1,
       "validated": true,
       "name": "Juan Arriaga Narciso",
       "career": "Adminstracion",
       "quarter": "5",
       "orders": [
         {
-          "orderid": 1,
+          "id": 1,
+          "discount" : 13.89,
           "status": "pending",
+          "total" : 100.15,
+          "description" : "Administracion 1",
           "items": [{
-            "itemid": 1150,
+            "id": 1150,
             "price" : 1.50,
             "quantity" : 10,
+            "bookid" : 150,
             "product" : {
-              "productid" : 2000,
+              "id" : 2000,
               "description" : "Impresion b/n negro mayoreo",
               "basePrice" : "1.50",
               "cost" : "0.05",
@@ -29,7 +34,7 @@
       ],
       "products": [
         {
-          "productid" : 2000,
+          "id" : 2000,
           "description" : "Impresion b/n negro mayoreo",
           "basePrice" : "0.15",
           "cost" : "0.05",
@@ -41,7 +46,7 @@
         "disabled" : false,
         "messages" : [
           {
-            "messageid" : 123456789,
+            "id" : 123456789,
             "customerid" : 123456789,
             "type" : "customer",
             "content" : "Hello this is a testing message please don´t respond",
@@ -64,11 +69,11 @@
         "blocked" : false,
         "copies" : 195,
         "item" : {
-          "itemid": 1150,
+          "id": 1150,
           "price" : 1.50,
           "quantity" : 10,
           "product" : {
-            "productid" : 2000,
+            "id" : 2000,
             "description" : "Impresion b/n negro mayoreo",
             "basePrice" : "1.50",
             "cost" : "0.05",
@@ -77,6 +82,27 @@
           }
         }
       }
-    ]
+    ],
+    "order" : {
+      "id": 1,
+      "status": "pending",
+      "discount" : 13.00,
+      "total" : 100.15,
+      "description" : "Administracion 1",
+      "items": [{
+        "id": 1150,
+        "price" : 1.50,
+        "quantity" : 10,
+        "bookid" : 45,
+        "product" : {
+          "id" : 2000,
+          "description" : "Impresion b/n negro mayoreo",
+          "basePrice" : "1.50",
+          "cost" : "0.05",
+          "code" : "abcdefghij",
+          "sku" : "123456789"
+        }
+      }]
+    }
   }
 }

@@ -23,51 +23,53 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextFormField(
-              controller: c,
-              decoration: InputDecoration(
-                labelText: "Nombre",
-              ),
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: DropDownMenu(
-                    values: ["Admnistracion", "Derecho"],
-                    onSelect: (value) {
-                      car = value;
-                      print(value);
-                    },
-                  ),
-                  flex: 5,
+    return Scaffold(
+      body: Container(
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                controller: c,
+                decoration: InputDecoration(
+                  labelText: "Nombre",
                 ),
-                Expanded(
-                  child: DropDownMenu(
-                    values: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
-                    onSelect: (value) {
-                      cuat = value;
-                      print(value);
-                    },
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: DropDownMenu(
+                      values: ["Admnistracion", "Derecho"],
+                      onSelect: (value) {
+                        car = value;
+                        print(value);
+                      },
+                    ),
+                    flex: 5,
                   ),
-                  flex: 5,
-                )
-              ],
-            ),
-            ElevatedButton(
-              onPressed: (){
-                _u.name = c.text;
-                _u.career = car;
-                _u.quarter = cuat;
-                widget.onRegistration(_u);
-              },
-              child: Text("Continuar"),
-            ),
-          ],
+                  Expanded(
+                    child: DropDownMenu(
+                      values: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+                      onSelect: (value) {
+                        cuat = value;
+                        print(value);
+                      },
+                    ),
+                    flex: 5,
+                  )
+                ],
+              ),
+              ElevatedButton(
+                onPressed: (){
+                  _u.name = c.text;
+                  _u.career = car;
+                  _u.quarter = cuat;
+                  widget.onRegistration(_u);
+                },
+                child: Text("Continuar"),
+              ),
+            ],
+          ),
         ),
       ),
     );

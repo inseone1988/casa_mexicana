@@ -1,5 +1,6 @@
 import 'package:casa_mexicana/api/api.dart';
 import 'package:casa_mexicana/api/response.dart';
+import 'package:casa_mexicana/ui/widgets/orderdialog.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -22,6 +23,8 @@ class _BookListState extends State<BookList> {
   double _discount = 0.00;
 
   Order order;
+
+  bool disableMakeOrder = false;
 
   NumberFormat f = NumberFormat.currency(
       decimalDigits: 2, locale: "es_MX", customPattern: "##0.0#");
@@ -65,13 +68,13 @@ class _BookListState extends State<BookList> {
                           Book c = books[b];
                           return ListTile(
                             isThreeLine: true,
-                            leading: Icon(Icons.next_week),
+                            leading: Icon(Icons.menu_book_outlined),
                             trailing: Text("${c.item.quantity}"),
                             title: Text(
                                 c.title != null ? c.title : "No hay titulo"),
                             subtitle: Column(
                               children: [
-                                Text("${c.author}"),
+                                Text("${c.author} - ${c.publisher} - ${c.edition}"),
                                 ButtonBar(
                                   children: [
                                     IconButton(
@@ -93,20 +96,26 @@ class _BookListState extends State<BookList> {
                                         onPressed: () {
                                           _showInfo(c);
                                         }),
+                                    IconButton(icon: Icon(Icons.remove_circle,color: Colors.red,), onPressed: (){
+                                      setState(() {
+                                        c.item.quantity -=1;
+                                        if(c.item.quantity == 0) books.remove(c);
+                                        _calculateTotal();
+                                      });
+                                    }),
                                     IconButton(
                                         icon: Icon(
                                           Icons.add_box,
-                                          color: Colors.lightGreenAccent,
+                                          color: Colors.green,
                                         ),
                                         onPressed: () {
                                           setState(() {
                                             c.item.quantity += 1;
                                             _calculateTotal();
                                           });
-                                        })
+                                        }),
                                   ],
                                 ),
-                                Divider()
                               ],
                             ),
                           );
@@ -178,7 +187,9 @@ class _BookListState extends State<BookList> {
                     Expanded(
                       flex: 2,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed:books != null && books.length > 0 && !disableMakeOrder ?  () {
+                          _processOrder();
+                        } : null,
                         child: Text("Confirmar pedido"),
                       ),
                     ),
@@ -284,5 +295,31 @@ class _BookListState extends State<BookList> {
             ],
           );
         });
+  }
+
+  void _processOrder() {
+    order = Order();
+    order.status = "Pendiente de pago";
+    order.discount = _discount;
+    order.total = _total;
+    order.items = [];
+    order.description = "$career $quarter";
+    books.forEach((element) {
+      element.item.bookid = element.id;
+      order.items.add(element.item);
+    });
+    showDialog(context: context, builder: (BuildContext context){
+      return OrderDialog(order,orderResult: (bool r ){
+        //Navigator.of(context).pop();
+        setState(() {
+          disableMakeOrder = true;
+        });
+        closeWindow();
+      },);
+    });
+  }
+
+  void closeWindow(){
+    Navigator.of(context).pop();
   }
 }
