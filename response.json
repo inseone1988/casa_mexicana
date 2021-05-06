@@ -103,6 +103,10 @@
           "sku" : "123456789"
         }
       }]
-    }
+    },
+    "careers" : [
+      "Administracion",
+      "Derecho"
+    ]
   }
 }

@@ -85,8 +85,9 @@ class _TiendaState extends State<Tienda> {
   }
 
   _getView() {
-    return user != null && user.id != null
-        ? BookList()
-        : UnimexView();
+    return BookList();
+    // return user != null && user.id != null
+    //     ? BookList()
+    //     : UnimexView();
   }
 }

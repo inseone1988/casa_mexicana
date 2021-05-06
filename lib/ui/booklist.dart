@@ -1,5 +1,6 @@
 import 'package:casa_mexicana/api/api.dart';
 import 'package:casa_mexicana/api/response.dart';
+import 'package:casa_mexicana/ui/widgets/dropdown.dart';
 import 'package:casa_mexicana/ui/widgets/orderdialog.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -25,6 +26,8 @@ class _BookListState extends State<BookList> {
   Order order;
 
   bool disableMakeOrder = false;
+
+  List<String> careers;
 
   NumberFormat f = NumberFormat.currency(
       decimalDigits: 2, locale: "es_MX", customPattern: "##0.0#");
@@ -56,70 +59,101 @@ class _BookListState extends State<BookList> {
             children: [
               Expanded(
                 flex: 1,
-                child: Center(child: Text("${career} ${quarter}")),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 5,
+                      child: DropDownMenu(
+                        values: careers,
+                        onSelect: (String value) {},
+                      ),
+                    ),
+                    Expanded(
+                      flex: 5,
+                      child: DropDownMenu(
+                        values: List.generate(10, (index) {
+                          return "${(index + 1)}";
+                        }),
+                        onSelect: (String value) {},
+                      ),
+                    ),
+                  ],
+                ),
               ),
               Expanded(
                 flex: 6,
                 child: books == null
                     ? Center(child: CircularProgressIndicator())
-                    : books.length > 0 ? ListView.builder(
-                        itemCount: books.length,
-                        itemBuilder: (a, b) {
-                          Book c = books[b];
-                          return ListTile(
-                            isThreeLine: true,
-                            leading: Icon(Icons.menu_book_outlined),
-                            trailing: Text("${c.item.quantity}"),
-                            title: Text(
-                                c.title != null ? c.title : "No hay titulo"),
-                            subtitle: Column(
-                              children: [
-                                Text("${c.author} - ${c.publisher} - ${c.edition}"),
-                                ButtonBar(
+                    : books.length > 0
+                        ? ListView.builder(
+                            itemCount: books.length,
+                            itemBuilder: (a, b) {
+                              Book c = books[b];
+                              return ListTile(
+                                isThreeLine: true,
+                                leading: Icon(Icons.menu_book_outlined),
+                                trailing: Text("${c.item.quantity}"),
+                                title: Text(c.title != null
+                                    ? c.title
+                                    : "No hay titulo"),
+                                subtitle: Column(
                                   children: [
-                                    IconButton(
-                                        icon: Icon(
-                                          Icons.delete,
-                                          color: Colors.red,
-                                        ),
-                                        onPressed: () {
-                                          setState(() {
-                                            books.remove(c);
-                                            _calculateTotal();
-                                          });
-                                        }),
-                                    IconButton(
-                                        icon: Icon(
-                                          Icons.info,
-                                          color: Colors.lightBlueAccent,
-                                        ),
-                                        onPressed: () {
-                                          _showInfo(c);
-                                        }),
-                                    IconButton(icon: Icon(Icons.remove_circle,color: Colors.red,), onPressed: (){
-                                      setState(() {
-                                        c.item.quantity -=1;
-                                        if(c.item.quantity == 0) books.remove(c);
-                                        _calculateTotal();
-                                      });
-                                    }),
-                                    IconButton(
-                                        icon: Icon(
-                                          Icons.add_box,
-                                          color: Colors.green,
-                                        ),
-                                        onPressed: () {
-                                          setState(() {
-                                            c.item.quantity += 1;
-                                            _calculateTotal();
-                                          });
-                                        }),
+                                    Text(
+                                        "${c.author} - ${c.publisher} - ${c.edition}"),
+                                    ButtonBar(
+                                      children: [
+                                        IconButton(
+                                            icon: Icon(
+                                              Icons.delete,
+                                              color: Colors.red,
+                                            ),
+                                            onPressed: () {
+                                              setState(() {
+                                                books.remove(c);
+                                                _calculateTotal();
+                                              });
+                                            }),
+                                        IconButton(
+                                            icon: Icon(
+                                              Icons.info,
+                                              color: Colors.lightBlueAccent,
+                                            ),
+                                            onPressed: () {
+                                              _showInfo(c);
+                                            }),
+                                        IconButton(
+                                            icon: Icon(
+                                              Icons.remove_circle,
+                                              color: Colors.red,
+                                            ),
+                                            onPressed: () {
+                                              setState(() {
+                                                c.item.quantity -= 1;
+                                                if (c.item.quantity == 0)
+                                                  books.remove(c);
+                                                _calculateTotal();
+                                              });
+                                            }),
+                                        IconButton(
+                                            icon: Icon(
+                                              Icons.add_box,
+                                              color: Colors.green,
+                                            ),
+                                            onPressed: () {
+                                              setState(() {
+                                                c.item.quantity += 1;
+                                                _calculateTotal();
+                                              });
+                                            }),
+                                      ],
+                                    ),
                                   ],
                                 ),
-                              ],
-                            ),
-                          );
-                        }) : Center(child: Text("No hay libros en este paquete"),),
+                              );
+                            })
+                        : Center(
+                            child: Text("No hay libros en este paquete"),
+                          ),
               ),
               Expanded(
                 flex: 3,
@@ -187,9 +221,13 @@ class _BookListState extends State<BookList> {
                     Expanded(
                       flex: 2,
                       child: ElevatedButton(
-                        onPressed:books != null && books.length > 0 && !disableMakeOrder ?  () {
-                          _processOrder();
-                        } : null,
+                        onPressed: books != null &&
+                                books.length > 0 &&
+                                !disableMakeOrder
+                            ? () {
+                                _processOrder();
+                              }
+                            : null,
                         child: Text("Confirmar pedido"),
                       ),
                     ),
@@ -213,14 +251,16 @@ class _BookListState extends State<BookList> {
     _total = 0;
     copiesTotal = 0;
     books.forEach((element) {
-      _subtotal += ((element.copies * element.item.quantity) * element.item.price) + 15;
+      _subtotal +=
+          ((element.copies * element.item.quantity) * element.item.price) + 15;
       copiesTotal += (element.copies * element.item.quantity);
     });
     if (copiesTotal > 500) {
-      if(copiesTotal < 2000) _discount = (_subtotal * 0.05);
-      if(copiesTotal > 2000 && copiesTotal < 5000) _discount = (_subtotal * 0.15);
-      if(copiesTotal > 5000) _discount = (_subtotal * 0.18);
-      if(_discount >300) _discount = 300;
+      if (copiesTotal < 2000) _discount = (_subtotal * 0.05);
+      if (copiesTotal > 2000 && copiesTotal < 5000)
+        _discount = (_subtotal * 0.15);
+      if (copiesTotal > 5000) _discount = (_subtotal * 0.18);
+      if (_discount > 300) _discount = 300;
     }
     print(copiesTotal);
     _total = (_subtotal - _discount);
@@ -236,14 +276,16 @@ class _BookListState extends State<BookList> {
               setState(() {
                 books = r.payload.books;
                 books.forEach((element) {
-                  element.item = Item(
-                    quantity: 1,
-                    price: 0.40
-                  );
+                  element.item = Item(quantity: 1, price: 0.40);
                 });
                 _calculateTotal();
               })
             });
+    Api.get("sistema.vialogika.com", "careers", {}, {}, (Response r) {
+      setState(() {
+        careers = r.payload.careers;
+      });
+    });
   }
 
   void _showInfo(Book book) {
@@ -308,18 +350,23 @@ class _BookListState extends State<BookList> {
       element.item.bookid = element.id;
       order.items.add(element.item);
     });
-    showDialog(context: context, builder: (BuildContext context){
-      return OrderDialog(order,orderResult: (bool r ){
-        //Navigator.of(context).pop();
-        setState(() {
-          disableMakeOrder = true;
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return OrderDialog(
+            order,
+            orderResult: (bool r) {
+              //Navigator.of(context).pop();
+              setState(() {
+                disableMakeOrder = true;
+              });
+              closeWindow();
+            },
+          );
         });
-        closeWindow();
-      },);
-    });
   }
 
-  void closeWindow(){
+  void closeWindow() {
     Navigator.of(context).pop();
   }
 }

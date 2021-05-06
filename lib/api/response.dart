@@ -35,6 +35,7 @@ class Payload {
     this.user,
     this.books,
     this.order,
+    this.careers,
   });
 
   String message;
@@ -42,6 +43,7 @@ class Payload {
   User user;
   List<Book> books;
   Order order;
+  List<String> careers;
 
   factory Payload.fromJson(Map<String, dynamic> json) => Payload(
     message: json["message"] == null ? null : json["message"],
@@ -49,6 +51,7 @@ class Payload {
     user: json["user"] == null ? null : User.fromJson(json["user"]),
     books: json["books"] == null ? null : List<Book>.from(json["books"].map((x) => Book.fromJson(x))),
     order: json["order"] == null ? null : Order.fromJson(json["order"]),
+    careers: json["careers"] == null ? null : List<String>.from(json["careers"].map((x) => x)),
   );
 
   Map<String, dynamic> toJson() => {
@@ -57,6 +60,7 @@ class Payload {
     "user": user == null ? null : user.toJson(),
     "books": books == null ? null : List<dynamic>.from(books.map((x) => x.toJson())),
     "order": order == null ? null : order.toJson(),
+    "careers": careers == null ? null : List<dynamic>.from(careers.map((x) => x)),
   };
 }
 
