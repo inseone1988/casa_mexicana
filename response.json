@@ -16,6 +16,7 @@
           "status": "pending",
           "total" : 100.15,
           "description" : "Administracion 1",
+          "userId" : 1,
           "items": [{
             "id": 1150,
             "price" : 1.50,
@@ -89,6 +90,7 @@
       "discount" : 13.00,
       "total" : 100.15,
       "description" : "Administracion 1",
+      "userId" : 1,
       "items": [{
         "id": 1150,
         "price" : 1.50,

@@ -195,6 +195,7 @@ class Order {
     this.discount,
     this.total,
     this.description,
+    this.userId,
     this.items,
   });
 
@@ -203,6 +204,7 @@ class Order {
   double discount;
   double total;
   String description;
+  int userId;
   List<Item> items;
 
   factory Order.fromJson(Map<String, dynamic> json) => Order(
@@ -211,6 +213,7 @@ class Order {
     discount: json["discount"] == null ? null : json["discount"].toDouble(),
     total: json["total"] == null ? null : json["total"].toDouble(),
     description: json["description"] == null ? null : json["description"],
+    userId: json["userId"] == null ? null : json["userId"],
     items: json["items"] == null ? null : List<Item>.from(json["items"].map((x) => Item.fromJson(x))),
   );
 
@@ -220,6 +223,7 @@ class Order {
     "discount": discount == null ? null : discount,
     "total": total == null ? null : total,
     "description": description == null ? null : description,
+    "userId": userId == null ? null : userId,
     "items": items == null ? null : List<dynamic>.from(items.map((x) => x.toJson())),
   };
 }
@@ -250,7 +254,7 @@ class User {
     validated: json["validated"] == null ? null : json["validated"],
     name: json["name"] == null ? null : json["name"],
     career: json["career"] == null ? null : json["career"],
-    quarter: json["quarter"] == null ? null : json["quarter"],
+    quarter: json["quarter"] == null ? null : "${json["quarter"]}",
     orders: json["orders"] == null ? null : List<Order>.from(json["orders"].map((x) => Order.fromJson(x))),
     products: json["products"] == null ? null : List<Product>.from(json["products"].map((x) => Product.fromJson(x))),
     chat: json["chat"] == null ? null : Chat.fromJson(json["chat"]),

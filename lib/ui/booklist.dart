@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:casa_mexicana/api/api.dart';
 import 'package:casa_mexicana/api/response.dart';
 import 'package:casa_mexicana/ui/widgets/dropdown.dart';
 import 'package:casa_mexicana/ui/widgets/orderdialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart';
 
 class BookList extends StatefulWidget {
@@ -27,7 +30,7 @@ class _BookListState extends State<BookList> {
 
   bool disableMakeOrder = false;
 
-  List<String> careers;
+  List<String> careers = [];
 
   NumberFormat f = NumberFormat.currency(
       decimalDigits: 2, locale: "es_MX", customPattern: "##0.0#");
@@ -62,21 +65,31 @@ class _BookListState extends State<BookList> {
                 child: Row(
                   children: [
                     Expanded(
-                      flex: 5,
+                      flex: 4,
                       child: DropDownMenu(
                         values: careers,
-                        onSelect: (String value) {},
+                        onSelect: (String value) {
+                          career = value;
+                        },
                       ),
                     ),
                     Expanded(
-                      flex: 5,
+                      flex: 4,
                       child: DropDownMenu(
                         values: List.generate(10, (index) {
                           return "${(index + 1)}";
                         }),
-                        onSelect: (String value) {},
+                        onSelect: (String value) {
+                          quarter = int.parse(value);
+                        },
                       ),
                     ),
+                    Expanded(
+                      flex: 2,
+                      child: IconButton(icon: Icon(Icons.sync), onPressed: (){
+                        _getBooks();
+                      }),
+                    )
                   ],
                 ),
               ),
@@ -267,25 +280,30 @@ class _BookListState extends State<BookList> {
   }
 
   void _getBooks() {
+    setState(() {
+      books=null;
+    });
     Api.get(
         "sistema.vialogika.com",
         "books",
         {},
         {"career": career, "quarter": "${quarter}"},
-        (Response r) => {
+        (Response r) async => {
               setState(() {
                 books = r.payload.books;
                 books.forEach((element) {
                   element.item = Item(quantity: 1, price: 0.40);
                 });
                 _calculateTotal();
+                print("Loaded books");
+              }),
+              await Api.get("sistema.vialogika.com", "careers", {}, {}, (Response r) {
+                setState(() {
+                  careers = r.payload.careers;
+                  print("Loaded careers");
+                });
               })
             });
-    Api.get("sistema.vialogika.com", "careers", {}, {}, (Response r) {
-      setState(() {
-        careers = r.payload.careers;
-      });
-    });
   }
 
   void _showInfo(Book book) {
@@ -339,13 +357,16 @@ class _BookListState extends State<BookList> {
         });
   }
 
-  void _processOrder() {
+  void _processOrder()async {
+    FlutterSecureStorage storage = await FlutterSecureStorage();
+    User u = User.fromJson(jsonDecode(await storage.read(key: "user")));
     order = Order();
     order.status = "Pendiente de pago";
     order.discount = _discount;
     order.total = _total;
     order.items = [];
     order.description = "$career $quarter";
+    order.userId = u.id;
     books.forEach((element) {
       element.item.bookid = element.id;
       order.items.add(element.item);

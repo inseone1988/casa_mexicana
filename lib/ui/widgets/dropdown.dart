@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class DropDownMenu extends StatefulWidget {
@@ -26,6 +28,7 @@ class _DropDownMenuState extends State<DropDownMenu> {
 
   @override
   Widget build(BuildContext context) {
+    _generateItemList();
     return DropdownButton<String>(
       items: items,
       value: selectedValue,
@@ -33,6 +36,8 @@ class _DropDownMenuState extends State<DropDownMenu> {
       iconSize: 24,
       elevation: 16,
       isExpanded: true,
+      //disabledHint: Text("Cargando ..."),
+      hint: Text(selectedValue != null ? selectedValue : "Selecciona carrera"),
       onChanged: (String value) {
         setState(() {
           selectedValue = value;
@@ -49,5 +54,6 @@ class _DropDownMenuState extends State<DropDownMenu> {
         value: widget.values[index],
       );
     });
+    if(items.length > 0 && selectedValue == null) selectedValue = items[0].value;
   }
 }
