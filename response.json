@@ -29,6 +29,18 @@
               "cost" : "0.05",
               "code" : "abcdefghij",
               "sku" : "123456789"
+            },
+            "book" : {
+              "id" : 1,
+              "title" : "Adminstracion moderna",
+              "author" : "Jose Moreno",
+              "publisher" : "Prentice Hall",
+              "edition" : "2015",
+              "career" : "Adminstarcion",
+              "quarter" : 1,
+              "status" : true,
+              "blocked" : false,
+              "copies" : 195
             }
           }]
         }

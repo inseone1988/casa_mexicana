@@ -64,6 +64,42 @@ class Payload {
   };
 }
 
+class Item {
+  Item({
+    this.id,
+    this.price,
+    this.quantity,
+    this.product,
+    this.bookid,
+    this.book,
+  });
+
+  int id;
+  double price;
+  int quantity;
+  Product product;
+  int bookid;
+  Book book;
+
+  factory Item.fromJson(Map<String, dynamic> json) => Item(
+    id: json["id"] == null ? null : json["id"],
+    price: json["price"] == null ? null : json["price"].toDouble(),
+    quantity: json["quantity"] == null ? null : json["quantity"],
+    product: json["product"] == null ? null : Product.fromJson(json["product"]),
+    bookid: json["bookid"] == null ? null : json["bookid"],
+    book: json["book"] == null ? null : Book.fromJson(json["book"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id == null ? null : id,
+    "price": price == null ? null : price,
+    "quantity": quantity == null ? null : quantity,
+    "product": product == null ? null : product.toJson(),
+    "bookid": bookid == null ? null : bookid,
+    "book": book == null ? null : book.toJson(),
+  };
+}
+
 class Book {
   Book({
     this.id,
@@ -120,38 +156,6 @@ class Book {
   };
 }
 
-class Item {
-  Item({
-    this.id,
-    this.price,
-    this.quantity,
-    this.product,
-    this.bookid,
-  });
-
-  int id;
-  double price;
-  int quantity;
-  Product product;
-  int bookid;
-
-  factory Item.fromJson(Map<String, dynamic> json) => Item(
-    id: json["id"] == null ? null : json["id"],
-    price: json["price"] == null ? null : json["price"].toDouble(),
-    quantity: json["quantity"] == null ? null : json["quantity"],
-    product: json["product"] == null ? null : Product.fromJson(json["product"]),
-    bookid: json["bookid"] == null ? null : json["bookid"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id == null ? null : id,
-    "price": price == null ? null : price,
-    "quantity": quantity == null ? null : quantity,
-    "product": product == null ? null : product.toJson(),
-    "bookid": bookid == null ? null : bookid,
-  };
-}
-
 class Product {
   Product({
     this.id,
@@ -201,7 +205,7 @@ class Order {
 
   int id;
   String status;
-  double discount;
+  dynamic discount;
   double total;
   String description;
   int userId;
@@ -210,7 +214,7 @@ class Order {
   factory Order.fromJson(Map<String, dynamic> json) => Order(
     id: json["id"] == null ? null : json["id"],
     status: json["status"] == null ? null : json["status"],
-    discount: json["discount"] == null ? null : json["discount"].toDouble(),
+    discount: json["discount"],
     total: json["total"] == null ? null : json["total"].toDouble(),
     description: json["description"] == null ? null : json["description"],
     userId: json["userId"] == null ? null : json["userId"],
@@ -220,7 +224,7 @@ class Order {
   Map<String, dynamic> toJson() => {
     "id": id == null ? null : id,
     "status": status == null ? null : status,
-    "discount": discount == null ? null : discount,
+    "discount": discount,
     "total": total == null ? null : total,
     "description": description == null ? null : description,
     "userId": userId == null ? null : userId,
@@ -254,7 +258,7 @@ class User {
     validated: json["validated"] == null ? null : json["validated"],
     name: json["name"] == null ? null : json["name"],
     career: json["career"] == null ? null : json["career"],
-    quarter: json["quarter"] == null ? null : "${json["quarter"]}",
+    quarter: json["quarter"] == null ? null : json["quarter"],
     orders: json["orders"] == null ? null : List<Order>.from(json["orders"].map((x) => Order.fromJson(x))),
     products: json["products"] == null ? null : List<Product>.from(json["products"].map((x) => Product.fromJson(x))),
     chat: json["chat"] == null ? null : Chat.fromJson(json["chat"]),
